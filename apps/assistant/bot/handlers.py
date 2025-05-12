@@ -77,15 +77,12 @@ async def handle_text(message: Message):
 
     elif action == "[SHOW_TASKS]":
         tasks = await get_tasks()
-        if not tasks:
-            await message.answer("📭 Задач не найдено.")
+        if tasks:
+            formatted = "\n\n".join([f"📌 <b>{t['title']}</b>\n{t.get('description', '')}" for t in tasks])
+            await message.answer(f"Вот ваши актуальные задачи:\n\n{formatted}", parse_mode="HTML")
         else:
-            text = "📋 <b>Актуальные задачи:</b>\n\n"
-            for i, t in enumerate(tasks, 1):
-                title = t.get("title", "Без названия")
-                color = t.get("color", "")
-                text += f"{i}. {title} ({color})\n"
-            await message.answer(text)
+            await message.answer("У вас пока нет задач.")
+        return
 
     elif action == "[DELETE_TASK]":
         tasks = await get_tasks()
@@ -130,6 +127,15 @@ async def handle_voice(message: Message):
     if action == "[CREATE_TASK]":
         pending_tasks[user.tg_id] = response_text
         await message.answer(response_text, reply_markup=confirm_keyboard())
+
+    elif action == "[SHOW_TASKS]":
+        tasks = await get_tasks()
+        if tasks:
+            formatted = "\n\n".join([f"📌 <b>{t['title']}</b>\n{t.get('description', '')}" for t in tasks])
+            await message.answer(f"Вот ваши актуальные задачи:\n\n{formatted}", parse_mode="HTML")
+        else:
+            await message.answer("У вас пока нет задач.")
+        return
 
     elif action == "[DELETE_TASK]":
         tasks = await get_tasks()
