@@ -10,10 +10,11 @@ import time
 from apps.assistant.bot.bot import bot, get_or_create_user
 from apps.service.ai_service import process_ai_request
 from apps.service.whisper_service import transcribe_voice
-from apps.service.yougile_service import create_task
+from apps.service.yougile_service import create_task, get_tasks, delete_task
 
 router = Router()
 pending_tasks = {}
+task_lookup_by_user = {}
 
 def confirm_keyboard():
     return InlineKeyboardMarkup(inline_keyboard=[
@@ -21,9 +22,17 @@ def confirm_keyboard():
         [InlineKeyboardButton(text="❌ Отмена", callback_data="cancel")]
     ])
 
+def delete_keyboard(user_id: int):
+    tasks = task_lookup_by_user.get(user_id, [])
+    buttons = [
+        [InlineKeyboardButton(text=t["title"], callback_data=f"delete:{t['id']}")]
+        for t in tasks
+    ]
+    return InlineKeyboardMarkup(inline_keyboard=buttons) if buttons else None
+
 def parse_task_block(text: str) -> dict:
-    title = text.split("\\n")[0].strip()
-    description = "\\n".join(text.split("\\n")[1:]).strip()
+    title = text.split("\n")[0].strip()
+    description = "\n".join(text.split("\n")[1:]).strip()
 
     deadline_ts = None
     priority = "task-green"
@@ -33,7 +42,7 @@ def parse_task_block(text: str) -> dict:
     elif "приоритет средний" in text.lower():
         priority = "task-yellow"
 
-    match = re.search(r"(\\d{4}-\\d{2}-\\d{2})", text)
+    match = re.search(r"(\d{4}-\d{2}-\d{2})", text)
     if match:
         try:
             struct_time = time.strptime(match.group(1), "%Y-%m-%d")
@@ -67,7 +76,6 @@ async def handle_text(message: Message):
         await message.answer(response_text, reply_markup=confirm_keyboard())
 
     elif action == "[SHOW_TASKS]":
-        from apps.service.yougile_service import get_tasks
         tasks = await get_tasks()
         if not tasks:
             await message.answer("📭 Задач не найдено.")
@@ -78,6 +86,14 @@ async def handle_text(message: Message):
                 color = t.get("color", "")
                 text += f"{i}. {title} ({color})\n"
             await message.answer(text)
+
+    elif action == "[DELETE_TASK]":
+        tasks = await get_tasks()
+        task_lookup_by_user[user.tg_id] = tasks
+        if not tasks:
+            await message.answer("📭 Нет задач для удаления.")
+        else:
+            await message.answer("Выберите задачу для удаления:", reply_markup=delete_keyboard(user.tg_id))
 
     else:
         await message.answer(response_text)
@@ -114,6 +130,15 @@ async def handle_voice(message: Message):
     if action == "[CREATE_TASK]":
         pending_tasks[user.tg_id] = response_text
         await message.answer(response_text, reply_markup=confirm_keyboard())
+
+    elif action == "[DELETE_TASK]":
+        tasks = await get_tasks()
+        task_lookup_by_user[user.tg_id] = tasks
+        if not tasks:
+            await message.answer("📭 Нет задач для удаления.")
+        else:
+            await message.answer("Выберите задачу для удаления:", reply_markup=delete_keyboard(user.tg_id))
+
     else:
         await message.answer(response_text)
 
@@ -141,4 +166,13 @@ async def handle_confirm_create(callback: CallbackQuery):
         await callback.message.answer("❌ Не удалось создать задачу в YouGile.")
 
     await callback.answer("Готово.")
-    
+
+@router.callback_query(F.data.startswith("delete:"))
+async def confirm_delete(callback: CallbackQuery):
+    task_id = callback.data.split(":", 1)[1]
+    success = await delete_task(task_id)
+    if success:
+        await callback.message.edit_text("🗑 Задача удалена.")
+    else:
+        await callback.message.answer("❌ Не удалось удалить задачу.")
+    await callback.answer()
