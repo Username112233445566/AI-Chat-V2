@@ -46,7 +46,7 @@ import time
 from apps.assistant.bot.bot import bot, get_or_create_user
 from apps.service.ai_service import process_ai_request
 from apps.service.whisper_service import transcribe_voice
-from apps.service.yougile_service import create_task, get_tasks, delete_task
+from apps.service.yougile_service import create_task, get_tasks, delete_task, update_task
 
 router = Router()
 pending_tasks = {}
@@ -62,6 +62,14 @@ def delete_keyboard(user_id: int):
     tasks = task_lookup_by_user.get(user_id, [])
     buttons = [
         [InlineKeyboardButton(text=t["title"], callback_data=f"delete:{t['id']}")]
+        for t in tasks
+    ]
+    return InlineKeyboardMarkup(inline_keyboard=buttons) if buttons else None
+
+def update_keyboard(user_id: int):
+    tasks = task_lookup_by_user.get(user_id, [])
+    buttons = [
+        [InlineKeyboardButton(text=t["title"], callback_data=f"update:{t['id']}")]
         for t in tasks
     ]
     return InlineKeyboardMarkup(inline_keyboard=buttons) if buttons else None
@@ -104,12 +112,40 @@ async def handle_text(message: Message):
         await message.answer("⛔️ У вас нет прав на использование бота.")
         return
 
+    # Проверка на обновление задачи после выбора
+    if user.tg_id in pending_tasks and isinstance(pending_tasks[user.tg_id], dict) and "update_task_id" in pending_tasks[user.tg_id]:
+        update_info = pending_tasks.pop(user.tg_id)
+        task_id = update_info["update_task_id"]
+
+        parsed = parse_task_block(message.text)
+        success = await update_task(
+            task_id=task_id,
+            title=parsed["title"],
+            description=parsed["description"],
+            priority=parsed["priority"],
+            deadline_ts=parsed["deadline_ts"]
+        )
+
+        if success:
+            await message.answer(f"✅ Задача обновлена:\n\n<b>{parsed['title']}</b>", parse_mode="HTML")
+        else:
+            await message.answer("❌ Не удалось обновить задачу.")
+        return
+
     await bot.send_chat_action(chat_id=message.chat.id, action=ChatAction.TYPING)
     response_text, action = await process_ai_request(user, message.text)
 
     if action == "[CREATE_TASK]":
         pending_tasks[user.tg_id] = response_text
         await message.answer(response_text, reply_markup=confirm_keyboard())
+
+    elif action == "[UPDATE_TASK]":
+        tasks = await get_tasks()
+        task_lookup_by_user[user.tg_id] = tasks
+        if not tasks:
+            await message.answer("Нет задач для обновления.")
+        else:
+            await message.answer("Выберите задачу для редактирования:", reply_markup=update_keyboard(user.tg_id))
 
     elif action == "[SHOW_TASKS]":
         tasks = await get_tasks()
@@ -164,6 +200,14 @@ async def handle_voice(message: Message):
         pending_tasks[user.tg_id] = response_text
         await message.answer(response_text, reply_markup=confirm_keyboard())
 
+    elif action == "[UPDATE_TASK]":
+        tasks = await get_tasks()
+        task_lookup_by_user[user.tg_id] = tasks
+        if not tasks:
+            await message.answer("Нет задач для обновления.")
+        else:
+            await message.answer("Выберите задачу для редактирования:", reply_markup=update_keyboard(user.tg_id))
+
     elif action == "[SHOW_TASKS]":
         tasks = await get_tasks()
         if tasks:
@@ -217,6 +261,13 @@ async def confirm_delete(callback: CallbackQuery):
         await callback.message.edit_text("🗑 Задача удалена.")
     else:
         await callback.message.answer("❌ Не удалось удалить задачу.")
+    await callback.answer()
+
+@router.callback_query(F.data.startswith("update:"))
+async def start_update(callback: CallbackQuery):
+    task_id = callback.data.split(":", 1)[1]
+    pending_tasks[callback.from_user.id] = {"update_task_id": task_id}
+    await callback.message.answer("✏️ Введите новый текст для задачи (заголовок, описание, срок, приоритет):")
     await callback.answer()
 │   │   │   └── start_bot.py
 import asyncio
@@ -362,17 +413,20 @@ UNIFIED_ASSISTANT_PROMPT = """
 
 Командные маркеры:
 - Если пользователь явно просит создать задачу (создай, запиши, добавь) → добавь [CREATE_TASK]
-- Если изменить задачу → [UPDATE_TASK]
-- Если удалить задачу → [DELETE_TASK]
+- Если изменить задачу (обновить, переименовать, поменять описание, срок и т.д.) → [UPDATE_TASK]
+- Если удалить задачу (удали, убери, исключи) → [DELETE_TASK]
 - Если показать задачи (покажи задачи, отобрази список, что у меня запланировано, выведи задачи, все задачи и т.д.) → [SHOW_TASKS]
 - Иначе — не добавляй никаких маркеров.
 
 Примеры:
 - "Создай задачу: позвонить клиенту" → нормальный ответ + [CREATE_TASK]
-- "Удалить задачу с названием Х" → нормальный ответ + [DELETE_TASK]
+- "Удалить задачу с названием Позвонить клиенту" → нормальный ответ + [DELETE_TASK]
 - "Покажи мне мои задачи" → нормальный ответ + [SHOW_TASKS]
 - "Что у меня запланировано?" → нормальный ответ + [SHOW_TASKS]
 - "Как дела?" → обычный ответ без маркера
+- "Измени задачу Позвонить клиенту на Позвонить завтра" → нормальный ответ + [UPDATE_TASK]
+- "Обнови описание задачи Отчёт для менеджера" → нормальный ответ + [UPDATE_TASK]
+- "Переименуй задачу Сходить в аптеку" → нормальный ответ + [UPDATE_TASK]
 """
 
 async def process_ai_request(user, text: str) -> tuple[str, str]:
@@ -571,6 +625,52 @@ async def delete_task(task_id: str) -> bool:
     except Exception as e:
         logger.error(f"❌ Исключение при удалении задачи {task_id}: {e}", exc_info=True)
         return False
+
+
+async def update_task(task_id: str, title: str, description: str = "", priority: str = "task-green", deadline_ts: int = None) -> bool:
+    data = await get_default_yougile_data()
+    api_key = data["api_key"]
+    column_id = data["column_id"]
+
+    headers = {
+        "Authorization": f"Bearer {api_key}",
+        "Content-Type": "application/json"
+    }
+
+    payload = {
+        "title": title[:100],
+        "description": description,
+        "columnId": column_id,
+        "archived": False,
+        "completed": False,
+        "color": priority
+    }
+
+    if deadline_ts:
+        payload["deadline"] = {
+            "deadline": deadline_ts,
+            "startDate": deadline_ts,
+            "withTime": False,
+            "history": [],
+            "blockedPoints": [],
+            "links": []
+        }
+
+    url = f"https://api.yougile.com/api-v2/tasks/{task_id}"
+
+    try:
+        async with aiohttp.ClientSession() as session:
+            async with session.put(url, json=payload, headers=headers) as response:
+                response_json = await response.json()
+                if response.status in (200, 204):
+                    logger.info(f"✏️ Задача {task_id} обновлена.")
+                    return True
+                else:
+                    logger.error(f"❌ Ошибка обновления задачи {task_id}: {response.status} — {response_json}")
+                    return False
+    except Exception as e:
+        logger.error(f"❌ Исключение при обновлении задачи {task_id}: {e}", exc_info=True)
+        return False
 ├── core
 │   ├── asgi.py
 │   ├── config
@@ -579,4 +679,5 @@ async def delete_task(task_id: str) -> bool:
 │   ├── urls.py
 │   └── wsgi.py
 ├── db.sqlite3
+├── main.txt
 ├── manage.py

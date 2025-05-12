@@ -10,7 +10,7 @@ import time
 from apps.assistant.bot.bot import bot, get_or_create_user
 from apps.service.ai_service import process_ai_request
 from apps.service.whisper_service import transcribe_voice
-from apps.service.yougile_service import create_task, get_tasks, delete_task
+from apps.service.yougile_service import create_task, get_tasks, delete_task, update_task
 
 router = Router()
 pending_tasks = {}
@@ -26,6 +26,14 @@ def delete_keyboard(user_id: int):
     tasks = task_lookup_by_user.get(user_id, [])
     buttons = [
         [InlineKeyboardButton(text=t["title"], callback_data=f"delete:{t['id']}")]
+        for t in tasks
+    ]
+    return InlineKeyboardMarkup(inline_keyboard=buttons) if buttons else None
+
+def update_keyboard(user_id: int):
+    tasks = task_lookup_by_user.get(user_id, [])
+    buttons = [
+        [InlineKeyboardButton(text=t["title"], callback_data=f"update:{t['id']}")]
         for t in tasks
     ]
     return InlineKeyboardMarkup(inline_keyboard=buttons) if buttons else None
@@ -68,12 +76,40 @@ async def handle_text(message: Message):
         await message.answer("⛔️ У вас нет прав на использование бота.")
         return
 
+    # Проверка на обновление задачи после выбора
+    if user.tg_id in pending_tasks and isinstance(pending_tasks[user.tg_id], dict) and "update_task_id" in pending_tasks[user.tg_id]:
+        update_info = pending_tasks.pop(user.tg_id)
+        task_id = update_info["update_task_id"]
+
+        parsed = parse_task_block(message.text)
+        success = await update_task(
+            task_id=task_id,
+            title=parsed["title"],
+            description=parsed["description"],
+            priority=parsed["priority"],
+            deadline_ts=parsed["deadline_ts"]
+        )
+
+        if success:
+            await message.answer(f"✅ Задача обновлена:\n\n<b>{parsed['title']}</b>", parse_mode="HTML")
+        else:
+            await message.answer("❌ Не удалось обновить задачу.")
+        return
+
     await bot.send_chat_action(chat_id=message.chat.id, action=ChatAction.TYPING)
     response_text, action = await process_ai_request(user, message.text)
 
     if action == "[CREATE_TASK]":
         pending_tasks[user.tg_id] = response_text
         await message.answer(response_text, reply_markup=confirm_keyboard())
+
+    elif action == "[UPDATE_TASK]":
+        tasks = await get_tasks()
+        task_lookup_by_user[user.tg_id] = tasks
+        if not tasks:
+            await message.answer("Нет задач для обновления.")
+        else:
+            await message.answer("Выберите задачу для редактирования:", reply_markup=update_keyboard(user.tg_id))
 
     elif action == "[SHOW_TASKS]":
         tasks = await get_tasks()
@@ -128,6 +164,14 @@ async def handle_voice(message: Message):
         pending_tasks[user.tg_id] = response_text
         await message.answer(response_text, reply_markup=confirm_keyboard())
 
+    elif action == "[UPDATE_TASK]":
+        tasks = await get_tasks()
+        task_lookup_by_user[user.tg_id] = tasks
+        if not tasks:
+            await message.answer("Нет задач для обновления.")
+        else:
+            await message.answer("Выберите задачу для редактирования:", reply_markup=update_keyboard(user.tg_id))
+
     elif action == "[SHOW_TASKS]":
         tasks = await get_tasks()
         if tasks:
@@ -181,4 +225,11 @@ async def confirm_delete(callback: CallbackQuery):
         await callback.message.edit_text("🗑 Задача удалена.")
     else:
         await callback.message.answer("❌ Не удалось удалить задачу.")
+    await callback.answer()
+
+@router.callback_query(F.data.startswith("update:"))
+async def start_update(callback: CallbackQuery):
+    task_id = callback.data.split(":", 1)[1]
+    pending_tasks[callback.from_user.id] = {"update_task_id": task_id}
+    await callback.message.answer("✏️ Введите новый текст для задачи (заголовок, описание, срок, приоритет):")
     await callback.answer()

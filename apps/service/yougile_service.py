@@ -101,3 +101,49 @@ async def delete_task(task_id: str) -> bool:
     except Exception as e:
         logger.error(f"❌ Исключение при удалении задачи {task_id}: {e}", exc_info=True)
         return False
+
+
+async def update_task(task_id: str, title: str, description: str = "", priority: str = "task-green", deadline_ts: int = None) -> bool:
+    data = await get_default_yougile_data()
+    api_key = data["api_key"]
+    column_id = data["column_id"]
+
+    headers = {
+        "Authorization": f"Bearer {api_key}",
+        "Content-Type": "application/json"
+    }
+
+    payload = {
+        "title": title[:100],
+        "description": description,
+        "columnId": column_id,
+        "archived": False,
+        "completed": False,
+        "color": priority
+    }
+
+    if deadline_ts:
+        payload["deadline"] = {
+            "deadline": deadline_ts,
+            "startDate": deadline_ts,
+            "withTime": False,
+            "history": [],
+            "blockedPoints": [],
+            "links": []
+        }
+
+    url = f"https://api.yougile.com/api-v2/tasks/{task_id}"
+
+    try:
+        async with aiohttp.ClientSession() as session:
+            async with session.put(url, json=payload, headers=headers) as response:
+                response_json = await response.json()
+                if response.status in (200, 204):
+                    logger.info(f"✏️ Задача {task_id} обновлена.")
+                    return True
+                else:
+                    logger.error(f"❌ Ошибка обновления задачи {task_id}: {response.status} — {response_json}")
+                    return False
+    except Exception as e:
+        logger.error(f"❌ Исключение при обновлении задачи {task_id}: {e}", exc_info=True)
+        return False
