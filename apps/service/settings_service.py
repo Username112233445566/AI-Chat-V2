@@ -14,7 +14,7 @@ def get_bot_token():
 
 
 def get_ai_key():
-    return "AIzaSyAloKq-Z57eJExW1HaQWBDaVh5G5tt8XM8" #et_secret().value_ai.strip()
+    return get_secret().value_ai.strip()
 
 
 def get_default_group_id():
