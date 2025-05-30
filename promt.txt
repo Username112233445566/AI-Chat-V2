@@ -1,108 +1,651 @@
-{
-    "system": {
-      "intro": "Привет! Меня зовут Наиля. Буду рада помочь тебе с вопросами об обучении за границей. Если что-то непонятно — просто спрашивай, я постараюсь объяснить всё простыми словами.",
-      "user_name": "{{full_name}}",
-      "current_date": "{{$current_datetime}}",
-      "fallback": "Извини, я немного запуталась. Можешь перефразировать вопрос? Хочу ответить как можно точнее.",
-      "human_contact_triggers": ["куратор", "связаться с человеком", "можно поговорить с человеком", "/kurator"],
-      "human_contact_response": "Понимаю тебя. Если хочешь, я попробую ещё раз объяснить, или могу направить к куратору.",
-      "strict_topics_only": true,
-      "reply_style_note": "Отвечай с задержкой перед отправкой сообщений. Пиши естественно, как обычный человек: без использования специальных знаков разметки (** ##), без частого использования эмодзи. Делай небольшие паузы между фразами, если текст длинный — разбивай на 2-3 коротких сообщения с интервалами 2–5 секунд. Стиль: дружелюбный, живой, но без чрезмерной 'радужности'. Можно иногда использовать короткие междометия (например, 'ага', 'понял', 'давай подумаем'), чтобы ответы были живыми. Списков и нумерации избегать — отвечай так, как будто просто разговариваешь в чате.",
-      "overall_faq": [
-        {
-          "question": "Можно ли поменять специальность после поступления?",
-          "answer": "Обычно да, но всё зависит от университета. Иногда нужно пройти дополнительные курсы или подать заявку на перевод. Лучше заранее уточнить правила в выбранном вузе."
-        },
-        {
-          "question": "Сколько длится обучение на выбранной программе?",
-          "answer": "Всё зависит от страны и программы. Например, бакалавриат обычно занимает 3–4 года, а магистратура — около 1–2 лет."
-        },
-        {
-          "question": "Есть ли подготовительный курс (языковой)?",
-          "answer": "Часто бывает. Университеты предлагают такие курсы, чтобы студенту было легче начать обучение. Можно уточнить на сайте выбранного вуза."
-        },
-        {
-          "question": "Какие нужны документы для подачи?",
-          "answer": "В основном это диплом или аттестат, паспорт, языковой сертификат. Иногда просят мотивационное письмо, рекомендации, справку о финансах."
-        },
-        {
-          "question": "Какой уровень китайского языка требуется для поступления (если программа на китайском языке)?",
-          "answer": "Для обучения на китайском обычно нужен сертификат HSK. Требуемый уровень зависит от конкретной программы и университета."
-        },
-        {
-          "question": "Какой минимальный балл нужен для экзамена HSK / HSKK?",
-          "answer": "Это зависит от требований университета. На бакалавриат обычно требуется HSK 4 или 5 уровня, а для магистратуры — выше."
-        },
-        {
-          "question": "Есть ли вступительные экзамены или собеседование?",
-          "answer": "Иногда да. Некоторые вузы могут попросить пройти собеседование или сдать дополнительные тесты. Всё зависит от программы."
-        },
-        {
-          "question": "Какие сроки подачи документов и дедлайны?",
-          "answer": "Точные сроки зависят от вуза и программы. Обычно приём документов идёт с осени до весны следующего года, но лучше уточнять индивидуально."
-        },
-        {
-          "question": "Как быстро приходит приглашение после зачисления?",
-          "answer": "Приглашение приходит через несколько недель после успешного поступления. Иногда быстрее, иногда чуть дольше."
-        },
-        {
-          "question": "Можете ли помочь с оформлением визы?",
-          "answer": "Конечно! Могу подсказать, какие документы нужны и на что обратить внимание. Но решение по визе всё равно принимает консульство."
-        },
-        {
-          "question": "Где получить китайскую медицинскую справку? Какие документы необходимы чтобы ее получить?",
-          "answer": "Такую справку можно сделать в медцентрах, которые выдают документы для выезда за границу. Обычно нужно принести паспорт, фотографии и пройти обследование."
-        }
-      ]
-    },
-    "Countries": {
-        "Italy": {
-            "faq": [
-                {
-                "question": "Какие требования для поступления в Италию?",
-                "answer": "Если планируешь поступать в Италию, то требования зависят от уровня программы. На Foundation нужно 11 лет образования и английский на уровне B2. Для бакалавриата — 12 лет учёбы, причём год вуза или колледжа тоже считается. На магистратуру требуется диплом бакалавра и минимум 15 лет образования. По английскому — всегда просят уровень B2 и выше. И ещё важен хороший средний балл. Если хочешь — могу ещё подсказать конкретные университеты, куда можно податься!"
-                },
-                {
-                "question": "Какие университеты есть в Италии?",
-                "answer": "Италия — классное место для учёбы! Среди популярных вузов: La Sapienza, Tor Vergata, Padua, Bologna, Turin, Milan, Pisa... Их очень много, у каждого свой стиль и особенности. Если скажешь, что именно хочешь изучать, я помогу подобрать подходящий вариант ✨"
-                },
-                {
-                "question": "Есть ли стипендии в Италии?",
-                "answer": "Да, стипендии в Италии есть! Но их условия зависят от региона и университета. Там нужно смотреть по конкретной программе. Если хочешь, я могу рассказать, как их найти и на что обратить внимание."
-                }
-            ]
-        },
-        "Poland": {
-            "faq": [
-                {
-                "question": "Какие документы нужны для поступления в Польшу?",
-                "answer": "Для поступления в Польшу тебе понадобятся: аттестат или диплом с апостилем, перевод на английский или польский язык, сертификат по английскому (например, IELTS 6.0 или внутренний тест), паспорт и медстраховка. Иногда ещё нужна нострификация диплома. Могу подсказать детали, если хочешь 😉"
-                },
-                {
-                "question": "Нужно ли сдавать экзамены при поступлении в Польшу?",
-                "answer": "Обычно нет! В Польшу чаще всего принимают по документам и сертификату языка. Например, в Вистулу или UEHS можно поступить просто с аттестатом и пройденным внутренним тестом."
-                },
-                {
-                "question": "Сколько стоит обучение в Польше?",
-                "answer": "В среднем обучение стоит от 1200 до 1750 евро в год, в зависимости от программы. Жизнь в Варшаве обойдётся где-то в 500–700 евро в месяц. Кстати, студенты могут работать во время учёбы! Это плюс 👍"
-                }
-            ]
-        },
-        "USA": {
-            "faq": [
-                {
-                "question": "Какие требования для поступления в США?",
-                "answer": "Для поступления в США нужен аттестат или диплом с переводом, тест по английскому (TOEFL, IELTS или Duolingo), мотивационное письмо, рекомендательные письма, резюме. Иногда ещё могут попросить результаты SAT или GRE, если поступаешь на бакалавриат или магистратуру. Всё это собираем заранее, чтобы успеть подать документы!"
-                },
-                {
-                "question": "Сколько стоит обучение в США?",
-                "answer": "Обучение в США стоит в среднем от 10 до 40 тысяч долларов в год. Зависит от университета, программы и города. Плюс есть расходы на визу, страховку и проживание. Могу помочь рассчитать примерный бюджет, если скажешь, куда хочешь поступать 🎓"
-                },
-                {
-                "question": "Какие сроки подачи заявок в США?",
-                "answer": "Есть три типа подачи: Early Decision (до ноября), Regular Decision (до января) и Rolling Admission (до весны). Чем раньше подашь документы — тем больше шансов поступить и получить стипендию!"
-                }
-            ]
-        }
+├── apps
+│   ├── assistant
+│   │   ├── admin.py
+│   │   ├── apps.py
+│   │   ├── bot
+│   │   │   ├── bot.py
+from aiogram import Bot
+from aiogram.enums import ParseMode
+from aiogram import Bot, Dispatcher
+from aiogram.client.default import DefaultBotProperties
+from apps.service.settings_service import get_bot_token
+from asgiref.sync import sync_to_async
+from apps.assistant.models import AssistantUser
+
+BOT_TOKEN = get_bot_token()
+
+bot = Bot(
+    token=BOT_TOKEN,
+    default=DefaultBotProperties(parse_mode=ParseMode.HTML)
+)
+
+dp = Dispatcher()
+
+@sync_to_async
+def get_or_create_user(tg_id: int, full_name: str) -> AssistantUser:
+    """
+    Создаёт или возвращает пользователя, обновляя его имя и дату последнего сообщения.
+    """
+    user, created = AssistantUser.objects.get_or_create(
+        tg_id=tg_id,
+        defaults={"full_name": full_name}
+    )
+    user.full_name = full_name
+    user.save(update_fields=["full_name", "last_message_at"])
+    return user
+│   │   │   ├── handlers.py
+from aiogram import Router, F
+from aiogram.types import Message, CallbackQuery, InlineKeyboardMarkup, InlineKeyboardButton
+from aiogram.enums import ChatAction
+
+import os
+import tempfile
+import re
+import time
+from datetime import datetime
+
+from apps.assistant.bot.bot import bot, get_or_create_user
+from apps.service.ai_service import process_ai_request
+from apps.service.whisper_service import transcribe_voice
+from apps.service.yougile_service import create_task, get_tasks, delete_task, update_task
+
+router = Router()
+pending_tasks = {}
+task_lookup_by_user = {}
+
+def confirm_keyboard():
+    return InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text="✅ Создать задачу", callback_data="confirm_create")],
+        [InlineKeyboardButton(text="❌ Отмена", callback_data="cancel")]
+    ])
+
+def delete_keyboard(user_id: int):
+    tasks = task_lookup_by_user.get(user_id, [])
+    buttons = [
+        [InlineKeyboardButton(text=t["title"], callback_data=f"delete:{t['id']}")]
+        for t in tasks
+    ]
+    return InlineKeyboardMarkup(inline_keyboard=buttons) if buttons else None
+
+def update_keyboard(user_id: int):
+    tasks = task_lookup_by_user.get(user_id, [])
+    buttons = [
+        [InlineKeyboardButton(text=t["title"], callback_data=f"update:{t['id']}")]
+        for t in tasks
+    ]
+    return InlineKeyboardMarkup(inline_keyboard=buttons) if buttons else None
+
+def parse_task_block(text: str) -> dict:
+    title = ""
+    description = ""
+    priority = "task-yellow"
+    deadline_ts = None
+
+    title_match = re.search(r"Задача:\s*(.+)", text)
+    if title_match:
+        title = title_match.group(1).strip()
+
+    description_match = re.search(r"Описание:\s*(.+)", text)
+    if description_match:
+        description = description_match.group(1).strip()
+
+    priority_match = re.search(r"Приоритет:\s*(🔴|🟠|🟢)", text)
+    if priority_match:
+        color = priority_match.group(1)
+        priority = {
+            "🔴": "task-red",
+            "🟠": "task-yellow",
+            "🟢": "task-green"
+        }.get(color, "task-yellow")
+
+    deadline_match = re.search(r"Срок:\s*([\d\-:\s]+)", text)
+    if deadline_match:
+        try:
+            dt = datetime.strptime(deadline_match.group(1).strip(), "%Y-%m-%d %H:%M")
+            deadline_ts = int(dt.timestamp() * 1000)
+        except:
+            pass
+
+    return {
+        "title": title,
+        "description": description,
+        "priority": priority,
+        "deadline_ts": deadline_ts
     }
-}
+
+def format_task_block(task: dict) -> str:
+    emoji = "📌"
+    title = task.get("title", "").lower()
+
+    if "спорт" in title or "зал" in title:
+        emoji = "🏃"
+    elif "свидан" in title:
+        emoji = "❤️"
+    elif "работ" in title:
+        emoji = "💼"
+
+    pri = {
+        "task-red": "🔴",
+        "task-yellow": "🟠",
+        "task-green": "🟢"
+    }.get(task.get("priority") or task.get("color", ""), "⚪")
+
+    deadline_ts = task.get("deadline_ts")
+    if not deadline_ts and isinstance(task.get("deadline"), dict):
+        deadline_ts = task["deadline"].get("deadline")
+
+    deadline = "Без срока"
+    if deadline_ts:
+        try:
+            deadline = datetime.fromtimestamp(deadline_ts / 1000).strftime("%Y-%m-%d %H:%M")
+        except:
+            pass
+
+    return (
+        f"{emoji} Задача: {task.get('title', 'Без названия')}\n"
+        f" · Приоритет: {pri}\n"
+        f" · Срок: {deadline}\n"
+        f" · Описание: {task.get('description', '')}\n"
+        f" · Источник: Запланировано через TaskMentor AI"
+    )
+
+@router.message(F.text)
+async def handle_text(message: Message):
+    user = await get_or_create_user(
+        tg_id=message.from_user.id,
+        full_name=message.from_user.full_name or message.from_user.username or "Unknown"
+    )
+
+    if not user.can_submit_tasks:
+        await message.answer("⛔️ У вас нет прав на использование бота.")
+        return
+
+    # Обработка обновления задачи
+    if user.tg_id in pending_tasks and isinstance(pending_tasks[user.tg_id], dict) and "update_task_id" in pending_tasks[user.tg_id]:
+        update_info = pending_tasks.pop(user.tg_id)
+        task_id = update_info["update_task_id"]
+        original = update_info["original_task"]
+
+        context = (
+            f"Вот текущая задача:\n"
+            f"- Название: {original.get('title', '')}\n"
+            f"- Описание: {original.get('description', '')}\n"
+            f"- Приоритет: {original.get('color', '')}\n"
+            f"- Срок: {original.get('deadline', {}).get('deadline', '')}\n\n"
+            f"Пользователь хочет внести следующие изменения:\n{message.text.strip()}"
+        )
+
+        ai_response, _ = await process_ai_request(user, context)
+        parsed = parse_task_block(ai_response)
+
+        success = await update_task(
+            task_id=task_id,
+            title=parsed["title"],
+            description=parsed["description"],
+            priority=parsed["priority"],
+            deadline_ts=parsed["deadline_ts"]
+        )
+
+        if success:
+            await message.answer(f"✅ Задача обновлена:\n\n{format_task_block(parsed)}")
+        else:
+            await message.answer("❌ Не удалось обновить задачу.")
+        return
+
+    await bot.send_chat_action(chat_id=message.chat.id, action=ChatAction.TYPING)
+    response_text, action = await process_ai_request(user, message.text)
+
+    if action == "[CREATE_TASK]":
+        parsed = parse_task_block(response_text)
+        pending_tasks[user.tg_id] = parsed
+        await message.answer(format_task_block(parsed), reply_markup=confirm_keyboard())
+
+    elif action == "[UPDATE_TASK]":
+        tasks = await get_tasks()
+        task_lookup_by_user[user.tg_id] = tasks
+        if not tasks:
+            await message.answer("Нет задач для обновления.")
+        else:
+            await message.answer("Выберите задачу для редактирования:", reply_markup=update_keyboard(user.tg_id))
+
+    elif action == "[SHOW_TASKS]":
+        tasks = await get_tasks()
+        if tasks:
+            formatted = "\n\n".join([format_task_block(t) for t in tasks])
+            await message.answer(f"Конечно, вот ваш список задач:\n\n{formatted}")
+        else:
+            await message.answer("У вас пока нет задач.")
+
+    elif action == "[DELETE_TASK]":
+        tasks = await get_tasks()
+        task_lookup_by_user[user.tg_id] = tasks
+        if not tasks:
+            await message.answer("📭 Нет задач для удаления.")
+        else:
+            await message.answer("Выберите задачу для удаления:", reply_markup=delete_keyboard(user.tg_id))
+
+    else:
+        await message.answer(response_text)
+
+@router.callback_query(F.data == "confirm_create")
+async def handle_confirm_create(callback: CallbackQuery):
+    user_id = callback.from_user.id
+    if user_id not in pending_tasks:
+        await callback.message.answer("⚠️ Нет сохранённой задачи.")
+        await callback.answer()
+        return
+
+    parsed = pending_tasks.pop(user_id)
+    success = await create_task(
+        title=parsed["title"],
+        description=parsed["description"],
+        priority=parsed["priority"],
+        deadline_ts=parsed["deadline_ts"]
+    )
+
+    if success:
+        await callback.message.edit_text(f"✅ Задача создана:\n\n{format_task_block(parsed)}")
+    else:
+        await callback.message.answer("❌ Не удалось создать задачу.")
+
+    await callback.answer("Готово.")
+
+@router.callback_query(F.data.startswith("delete:"))
+async def confirm_delete(callback: CallbackQuery):
+    task_id = callback.data.split(":", 1)[1]
+    success = await delete_task(task_id)
+    if success:
+        await callback.message.edit_text("🗑 Задача удалена.")
+    else:
+        await callback.message.answer("❌ Не удалось удалить задачу.")
+    await callback.answer()
+
+@router.callback_query(F.data.startswith("update:"))
+async def start_update(callback: CallbackQuery):
+    task_id = callback.data.split(":", 1)[1]
+    task = next((t for t in task_lookup_by_user.get(callback.from_user.id, []) if t["id"] == task_id), None)
+    if task:
+        pending_tasks[callback.from_user.id] = {
+            "update_task_id": task_id,
+            "original_task": task
+        }
+        await callback.message.answer("✏️ Введите новый текст для задачи (заголовок, описание, срок, приоритет):")
+    await callback.answer()
+│   │   │   └── start_bot.py
+import asyncio
+from apps.assistant.bot.bot import bot, dp
+from apps.assistant.bot.handlers import router
+
+async def start_bot():
+    dp.include_router(router)
+    await dp.start_polling(bot)
+│   │   ├── __init__.py
+│   │   ├── management
+│   │   │   └── commands
+│   │   │       └── runbot.py
+│   │   ├── migrations
+│   │   │   └── __init__.py
+│   │   └── models.py
+│   └── service
+│       ├── ai_service.py
+import asyncio
+import logging
+import google.generativeai as genai
+from apps.service.settings_service import get_ai_key
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+
+GOOGLE_API_KEY = get_ai_key()
+genai.configure(api_key=GOOGLE_API_KEY)
+genai_model = genai.GenerativeModel("gemini-2.0-flash")
+
+UNIFIED_ASSISTANT_PROMPT = """
+⚠️ Важно:
+— Никогда не проси уточнений.
+— Никогда не отвечай, что нужно больше информации.
+— Никогда не добавляй маркеры, кроме: [CREATE_TASK], [UPDATE_TASK], [DELETE_TASK], [SHOW_TASKS].
+— Если недостаточно данных, используй «Без срока», «🟠» и пустое описание по умолчанию.
+— Твоя задача — всегда возвращать результат, даже если пользователь дал минимум информации.
+
+Ты — умный AI-помощник, который управляет задачами от имени пользователя. Отвечай строго по структуре ниже.
+
+📌 Основные функции:
+1. Всегда возвращай задачу в чётком формате.
+2. Никогда не отвечай фразами типа “Какую задачу вы хотите изменить?”, “Что именно изменить?”, “Хорошо, уточните” и т.д.
+3. Никогда не добавляй лишнего текста.
+4. Всегда отвечай только задачей (если это CREATE/UPDATE), или короткой фразой + маркером (если SHOW/DELETE).
+5. Не придумывай лишние шаги, просто обновляй то, что просит пользователь.
+
+📦 Формат задачи:
+[эмодзи] Задача: [название задачи]
+ · Приоритет: [🔴 / 🟠 / 🟢]
+ · Срок: [гггг-мм-дд чч:мм] (или “Без срока”)
+ · Описание: [описание задачи]
+ · Источник: Запланировано через TaskMentor AI
+
+---
+
+🧠 Примеры:
+
+Пользователь: создай задачу “Позвонить клиенту завтра в 14:00”
+Ответ:
+📞 Задача: Позвонить клиенту
+ · Приоритет: 🟠
+ · Срок: 2025-05-22 14:00
+ · Описание: Позвонить клиенту в 14:00
+ · Источник: Запланировано через TaskMentor AI
+[CREATE_TASK]
+
+Пользователь: поменяй время свидания на 13:00
+Ответ:
+❤️ Задача: Пойти на свидание
+ · Приоритет: 🟠
+ · Срок: 2025-05-22 13:00
+ · Описание: Пойти на свидание в 13:00
+ · Источник: Запланировано через TaskMentor AI
+[UPDATE_TASK]
+
+Пользователь: покажи список задач
+Ответ:
+📋 Вот ваши задачи:
+[SHOW_TASKS]
+
+Пользователь: удали задачу про спорт
+Ответ:
+🗑 Удаляю задачу “Пойти в спортзал”
+[DELETE_TASK]
+"""
+
+async def process_ai_request(user, text: str) -> tuple[str, str]:
+    text_lower = text.lower().strip()
+
+    quick_phrases = ["все задачи", "покажи задачи", "отобрази задачи", "выведи задачи", "что у меня запланировано", "список задач"]
+    if any(phrase in text_lower for phrase in quick_phrases):
+        logger.info(f"⚡ Быстрое определение команды SHOW_TASKS для: {text_lower}")
+        return "📋 Вот ваши задачи:", "[SHOW_TASKS]"
+
+    prompt = UNIFIED_ASSISTANT_PROMPT + f"\n\nПользователь: {text}\nОтвет:"
+    try:
+        loop = asyncio.get_running_loop()
+        result = await loop.run_in_executor(None, lambda: genai_model.generate_content(prompt))
+        full_text = result.text.strip()
+
+        action = None
+        for marker in ["[CREATE_TASK]", "[UPDATE_TASK]", "[DELETE_TASK]", "[SHOW_TASKS]"]:
+            if marker in full_text:
+                action = marker
+                full_text = full_text.replace(marker, "").strip()
+                break
+
+        logger.info(f"AI response: {full_text} | action: {action}")
+        return full_text, action
+    except Exception as e:
+        logger.error(f"AI error for user {user.tg_id}: {e}", exc_info=True)
+        return "⚠️ Ошибка при обращении к AI.", None
+│       ├── settings_service.py
+from apps.assistant.models import Secret
+from django.core.exceptions import ObjectDoesNotExist
+from asgiref.sync import sync_to_async
+
+def get_secret():
+    try:
+        return Secret.objects.filter(is_active=True).latest("updated_at")
+    except ObjectDoesNotExist:
+        raise Exception("❌ Нет активной записи в Secret. Задай её через админку.")
+
+def get_bot_token():
+    return get_secret().value_bot.strip()
+
+def get_ai_key():
+    return get_secret().value_ai.strip()
+
+def get_default_group_id():
+    return get_secret().value_group.strip()
+
+@sync_to_async
+def get_default_yougile_data():
+    secret = get_secret()
+    return {
+        "api_key": secret.yougile_api_key.strip(),
+        "board_id": secret.yougile_board_id.strip(),
+        "column_id": secret.yougile_column_id.strip(),
+    }
+│       ├── telegram_service.py
+from pathlib import Path
+import whisper
+import torch
+import asyncio
+import logging
+
+logger = logging.getLogger(__name__)
+
+try:
+    if torch.cuda.is_available():
+        device = "cuda"
+    elif torch.backends.mps.is_available():
+        device = "mps"
+    else:
+        device = "cpu"
+    logger.info(f"Whisper будет использовать устройство: {device}")
+    model = whisper.load_model("base", device=device)
+except Exception as e:
+    logger.error(f"Ошибка при инициализации Whisper: {e}", exc_info=True)
+    model = whisper.load_model("base", device="cpu")
+
+async def transcribe_voice(file_path: str, language: str = None) -> str:
+    """
+    Асинхронная транскрибация аудиофайла через Whisper (через executor).
+    """
+    loop = asyncio.get_running_loop()
+
+    try:
+        result = await loop.run_in_executor(
+            None,
+            lambda: model.transcribe(file_path, language=language)
+        )
+        return result.get("text", "").strip()
+    except Exception as e:
+        logger.error(f"Ошибка при транскрибации файла {file_path}: {e}", exc_info=True)
+        return ""
+│       ├── whisper_service.py
+from pathlib import Path
+import whisper
+import torch
+import asyncio
+import logging
+
+logger = logging.getLogger(__name__)
+
+try:
+    if torch.cuda.is_available():
+        device = "cuda"
+    elif torch.backends.mps.is_available():
+        device = "mps"
+    else:
+        device = "cpu"
+    logger.info(f"Whisper будет использовать устройство: {device}")
+    model = whisper.load_model("base", device=device)
+except Exception as e:
+    logger.error(f"Ошибка при инициализации Whisper: {e}", exc_info=True)
+    model = whisper.load_model("base", device="cpu")
+
+async def transcribe_voice(file_path: str, language: str = None) -> str:
+    """
+    Асинхронная транскрибация аудиофайла через Whisper (через executor).
+    """
+    loop = asyncio.get_running_loop()
+
+    try:
+        result = await loop.run_in_executor(
+            None,
+            lambda: model.transcribe(file_path, language=language)
+        )
+        return result.get("text", "").strip()
+    except Exception as e:
+        logger.error(f"Ошибка при транскрибации файла {file_path}: {e}", exc_info=True)
+        return ""
+│       └── yougile_service.py
+import aiohttp
+import logging
+from apps.service.settings_service import get_default_yougile_data
+
+logger = logging.getLogger(__name__)
+
+
+async def create_task(title: str, description: str = "", priority: str = "task-green", deadline_ts: int = None) -> bool:
+    data = await get_default_yougile_data()
+    api_key = data["api_key"]
+    column_id = data["column_id"]
+
+    headers = {
+        "Authorization": f"Bearer {api_key}",
+        "Content-Type": "application/json"
+    }
+
+    payload = {
+        "title": title[:100],
+        "description": description,
+        "columnId": column_id,
+        "archived": False,
+        "completed": False,
+        "color": priority
+    }
+
+    if deadline_ts:
+        payload["deadline"] = {
+            "deadline": deadline_ts,
+            "startDate": deadline_ts,
+            "withTime": False,
+            "history": [],
+            "blockedPoints": [],
+            "links": []
+        }
+
+    try:
+        async with aiohttp.ClientSession() as session:
+            async with session.post("https://api.yougile.com/api-v2/tasks", json=payload, headers=headers) as response:
+                response_json = await response.json()
+                if response.status in (200, 201) and "id" in response_json:
+                    logger.info(f"✅ Задача успешно создана в YouGile: {response_json['id']}")
+                    return True
+                else:
+                    logger.error(f"❌ Ошибка при создании задачи: {response.status} {response_json}")
+                    return False
+    except Exception as e:
+        logger.error(f"❌ Исключение при создании задачи: {e}", exc_info=True)
+        return False
+
+
+async def get_tasks(limit: int = 10, offset: int = 0) -> list[dict]:
+    data = await get_default_yougile_data()
+    api_key = data["api_key"]
+
+    headers = {
+        "Authorization": f"Bearer {api_key}",
+        "Content-Type": "application/json"
+    }
+
+    url = f"https://api.yougile.com/api-v2/task-list?limit={limit}&offset={offset}"
+
+    try:
+        async with aiohttp.ClientSession() as session:
+            async with session.get(url, headers=headers) as response:
+                response_json = await response.json()
+                if response.status == 200 and isinstance(response_json, dict):
+                    return response_json.get("content", [])
+                else:
+                    logger.error(f"❌ Ошибка получения задач: {response.status} — {response_json}")
+                    return []
+    except Exception as e:
+        logger.error(f"❌ Исключение при получении задач: {e}", exc_info=True)
+        return []
+
+
+async def delete_task(task_id: str) -> bool:
+    data = await get_default_yougile_data()
+    api_key = data["api_key"]
+
+    headers = {
+        "Authorization": f"Bearer {api_key}",
+        "Content-Type": "application/json"
+    }
+
+    url = f"https://api.yougile.com/api-v2/tasks/{task_id}"
+    payload = {
+        "deleted": True
+    }
+
+    try:
+        async with aiohttp.ClientSession() as session:
+            async with session.put(url, headers=headers, json=payload) as response:
+                if response.status in (200, 204):
+                    logger.info(f"🗑 Задача {task_id} успешно удалена.")
+                    return True
+                else:
+                    text = await response.text()
+                    logger.error(f"❌ Ошибка при удалении задачи {task_id}: {response.status} — {text}")
+                    return False
+    except Exception as e:
+        logger.error(f"❌ Исключение при удалении задачи {task_id}: {e}", exc_info=True)
+        return False
+
+
+async def update_task(task_id: str, title: str, description: str = "", priority: str = "task-green", deadline_ts: int = None) -> bool:
+    data = await get_default_yougile_data()
+    api_key = data["api_key"]
+    column_id = data["column_id"]
+
+    headers = {
+        "Authorization": f"Bearer {api_key}",
+        "Content-Type": "application/json"
+    }
+
+    payload = {
+        "title": title[:100],
+        "description": description,
+        "columnId": column_id,
+        "archived": False,
+        "completed": False,
+        "color": priority
+    }
+
+    if deadline_ts:
+        payload["deadline"] = {
+            "deadline": deadline_ts,
+            "startDate": deadline_ts,
+            "withTime": False,
+            "history": [],
+            "blockedPoints": [],
+            "links": []
+        }
+
+    url = f"https://api.yougile.com/api-v2/tasks/{task_id}"
+
+    try:
+        async with aiohttp.ClientSession() as session:
+            async with session.put(url, json=payload, headers=headers) as response:
+                response_json = await response.json()
+                if response.status in (200, 204):
+                    logger.info(f"✏️ Задача {task_id} обновлена.")
+                    return True
+                else:
+                    logger.error(f"❌ Ошибка обновления задачи {task_id}: {response.status} — {response_json}")
+                    return False
+    except Exception as e:
+        logger.error(f"❌ Исключение при обновлении задачи {task_id}: {e}", exc_info=True)
+        return False
+├── core
+│   ├── asgi.py
+│   ├── config
+│   │   ├── __init__.py
+│   │   └── settings.py
+│   ├── urls.py
+│   └── wsgi.py
+├── db.sqlite3
+├── docker-compose.yml
+├── Dockerfile
+├── manage.py
+├── nginx
+│   └── default.conf
+├── requirements.txt
